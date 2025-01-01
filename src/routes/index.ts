@@ -6,7 +6,7 @@ const dataSource = './data/list.txt';
 
 router.post('/contato',async (req,res) => {
 
-    const {nome} = req.body;
+    const {name} = req.body;
 
     let list:string[] = [];
 
@@ -15,10 +15,10 @@ router.post('/contato',async (req,res) => {
         list = data.split('\n');
     }  catch(err) {}
 
-    list.push(nome);
+    list.push(name);
     await writeFile(dataSource,list.join('\n'));
 
-    res.status(201).json({name:nome});
+    res.status(201).json({name:name});
 })
 
 router.get('/contatos',async (req,res) => {
@@ -31,6 +31,25 @@ router.get('/contatos',async (req,res) => {
     }catch(err) {}
 
     res.status(200).json({contacts:list})
+
+})
+
+router.delete('/contato',async (req,res) => {
+
+    const { name } = req.query;
+
+    let list:string[] = []
+
+    try {
+        const data = await readFile(dataSource,{encoding:'utf-8'});
+        list = data.split('\n');
+    }catch(err) {}
+
+    let newList = list.filter(item => item.toLowerCase() !== (name as string).toLowerCase());
+
+    await writeFile(dataSource,newList.join('\n'));
+
+    res.status(200).json({message:"Excluido com sucesso",name:name});
 
 })
 
