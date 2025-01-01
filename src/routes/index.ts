@@ -21,6 +21,18 @@ router.post('/contato',async (req,res) => {
     res.status(201).json({name:nome});
 })
 
+router.get('/contatos',async (req,res) => {
+
+    let list:string[] = []
+
+    try {
+        const data = await readFile(dataSource,{encoding:'utf-8'});
+        list = data.split('\n');
+    }catch(err) {}
+
+    res.status(200).json({contacts:list})
+
+})
 
 
 
