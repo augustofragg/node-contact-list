@@ -12,30 +12,19 @@ export const getContact = async () => {
     return list;
 }
 
-export const creatContact = async (name) => {
+export const creatContact = async (name: string) => {
     
-    let list:string[] = [];
-    try {
-        const data = await readFile(dataSource,{encoding:'utf-8'});
-        list = data.split('\n');
-    }  catch(err) {}
-
+    let list = await getContact();
     list.push(name);
     await writeFile(dataSource,list.join('\n'));
 
     return list
 }
 
-export const deleteContact = async (name) => {
+export const deleteContact = async (name:string) => {
     
-    let list:string[] = []
-
-    try {
-        const data = await readFile(dataSource,{encoding:'utf-8'});
-        list = data.split('\n');
-    }catch(err) {}
-
-    let newList = list.filter(item => item.toLowerCase() !== (name as string).toLowerCase());
+    let list = await getContact();
+    let newList = list.filter(item => item.toLowerCase() !== name.toLowerCase());
 
     await writeFile(dataSource,newList.join('\n'));
 }

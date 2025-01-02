@@ -18,13 +18,9 @@ router.post('/contato',async (req,res)=> {
 })
 
 router.get('/contatos',async (req,res) => {
-
-    let list:string[] = []
-
-    list = await getContact();
-
+    
+    let list = await getContact();
     res.status(200).json({contacts:list})
-
 })
 
 router.delete('/contato',async (req,res)=> {
@@ -36,7 +32,7 @@ router.delete('/contato',async (req,res)=> {
         return
     }
 
-    await deleteContact(name);
+    await deleteContact(name as string);
 
     res.status(200).json({message:"Excluido com sucesso",name:name});
 
